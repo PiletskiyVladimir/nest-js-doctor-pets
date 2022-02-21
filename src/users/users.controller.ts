@@ -15,6 +15,7 @@ import { ICommonMethods } from "../interfaces/methods.interface";
 import { User } from "./user.model";
 import { FieldsCheckOutput, Field } from "errors-checker";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Controller("users")
 export class UsersController implements ICommonMethods<User> {
@@ -33,14 +34,26 @@ export class UsersController implements ICommonMethods<User> {
 
         if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
 
+        let limit = +query.limit || 100,
+            offset = +query.offset || 0;
 
+        let sortField = query.sortField || 'id',
+            sortType = query.sortType || 'asc';
 
-        return query;
+        return await this.userService.getAll({offset, limit, sortField, sortType, query: obj});
     }
 
     @Get("/:id")
     async getById(@Param("id") id: number) {
-        return [];
+        let params = [
+            new Field('id', id, 'number', false)
+        ];
+
+        let {errors, obj} = new FieldsCheckOutput(params).check();
+
+        if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
+
+        return this.userService.getById(id);
     }
 
     @Post()
@@ -67,12 +80,37 @@ export class UsersController implements ICommonMethods<User> {
     }
 
     @Patch("/:id")
-    async update(@Param("id") id: number, @Body() t: any) {
-        return [];
+    async update(@Param("id") id: number, @Body() body: any) {
+        let params = [
+            new Field('id', id, 'number', false),
+            new Field('login', body.login, 'string', true),
+            new Field('name', body.name, 'string', true),
+            new Field('surname', body.surname, 'string', true)
+        ];
+
+        let {errors, obj} = new FieldsCheckOutput(params).check();
+
+        if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
+
+        let dto: UpdateUserDto = {
+            name: obj.name,
+            surname: obj.surname,
+            login: obj.login,
+        }
+
+        return this.userService.update(id, dto);
     }
 
     @Delete("/:id")
     async delete(@Param("id") id: number) {
-        return [];
+        let params = [
+            new Field('id', id, 'number', false)
+        ];
+
+        let {errors, obj} = new FieldsCheckOutput(params).check();
+
+        if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
+
+        return this.userService.delete(id);
     }
 }

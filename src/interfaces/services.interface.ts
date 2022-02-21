@@ -3,7 +3,9 @@ export declare type TQuerySettings = {
     limit: number,
     offset: number,
     sortField: string,
-    sortType: string
+    sortType: string,
+    raw?: boolean,
+    attributes?: Array<string>
 }
 
 export interface ICommonServices<T, DTO> {

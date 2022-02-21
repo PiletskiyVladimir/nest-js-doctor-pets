@@ -3,6 +3,7 @@ import { ICommonServices, TQuerySettings } from "../interfaces/services.interfac
 import { User } from "./user.model";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { InjectModel } from "@nestjs/sequelize";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersService implements ICommonServices<User, CreateUserDto> {
@@ -14,32 +15,46 @@ export class UsersService implements ICommonServices<User, CreateUserDto> {
     }
 
     async delete(id: number): Promise<null> {
+        let user = await this.userRepository.findOne({ where: { id } });
+
+        if (!user) throw new HttpException("User not found", 404);
+
         await this.userRepository.destroy({ where: { id } });
 
         return null;
     }
 
-    async getAll({ offset, limit, sortField, sortType, query }: TQuerySettings): Promise<User[]> {
+    async getAll({
+                     offset,
+                     limit,
+                     sortField,
+                     sortType,
+                     query,
+                     raw = false,
+                     attributes = undefined
+                 }: TQuerySettings): Promise<User[]> {
         return await this.userRepository.findAll({
             where: query,
             offset: offset,
             limit: limit,
-            order: [[sortField, sortType]]
+            order: [[sortField, sortType]],
+            raw: raw,
+            attributes: attributes
         });
     }
 
     async getById(id: number): Promise<User> {
         let user = await this.userRepository.findOne({ where: { id } });
 
-        if (!user) throw new HttpException(null, 404);
+        if (!user) throw new HttpException("User not found", 404);
 
         return user;
     }
 
-    async update(id: number, updateModel: User): Promise<User> {
+    async update(id: number, updateModel: UpdateUserDto): Promise<User> {
         let user = await this.userRepository.findOne({ where: { id } });
 
-        if (!user) throw new HttpException(null, 404);
+        if (!user) throw new HttpException("User not found", 404);
 
         for (let prop in updateModel) {
             user[prop] = updateModel[prop];
