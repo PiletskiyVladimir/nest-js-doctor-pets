@@ -8,8 +8,8 @@ export class Session extends Model<Session> {
 
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER})
-    userId: number;
+    user_id: number;
 
     @Column({type: DataType.STRING})
-    session: string;
+    token: string;
 }

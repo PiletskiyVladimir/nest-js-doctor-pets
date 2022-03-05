@@ -8,7 +8,7 @@ export class Pet extends Model<Pet> {
 
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER})
-    userId;
+    user_id;
 
     @Column({type: DataType.STRING})
     name: string;
@@ -18,7 +18,4 @@ export class Pet extends Model<Pet> {
 
     @Column({type: DataType.STRING})
     image: string;
-
-    @BelongsTo(() => User)
-    owner: User;
 }

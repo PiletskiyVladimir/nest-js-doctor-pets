@@ -27,6 +27,7 @@
     "@nestjs/sequelize": "^8.0.0",
     "cross-env": "^7.0.3",
     "errors-checker": "^1.1.1",
+    "md5-typescript": "^1.0.5",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.13",

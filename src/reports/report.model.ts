@@ -9,11 +9,11 @@ export class Report extends Model<Report> {
 
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER})
-    doctorId: number;
+    doctor_id: number;
 
     @ForeignKey(() => Pet)
     @Column({type: DataType.INTEGER})
-    petId: number;
+    pet_id: number;
 
     @Column({type: DataType.STRING})
     reason: string;

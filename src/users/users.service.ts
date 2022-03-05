@@ -1,17 +1,21 @@
-import { HttpException, Injectable, NotFoundException } from "@nestjs/common";
-import { ICommonServices, TQuerySettings } from "../interfaces/services.interface";
+import { HttpException, Injectable } from "@nestjs/common";
+import {
+    IDeleteService,
+    IGetAllService,
+    IGetByIdService,
+    IUpdateService,
+    ICreateService
+} from "../interfaces/services.interface";
 import { User } from "./user.model";
-import { CreateUserDto } from "./dto/create-user.dto";
 import { InjectModel } from "@nestjs/sequelize";
-import { UpdateUserDto } from "./dto/update-user.dto";
+import { UpdateUserDto } from "../dto/users/update-user.dto";
+import { RegisterUserDto } from "../dto/users/register-user.dto";
+import { TQuerySettings } from "../types";
+import { CreateUserDto } from "../dto/users/create-user.dto";
 
 @Injectable()
-export class UsersService implements ICommonServices<User, CreateUserDto> {
+export class UsersService implements IGetAllService<User>, IGetByIdService<User>, IUpdateService<User>, IDeleteService, ICreateService<User, RegisterUserDto> {
     constructor(@InjectModel(User) private userRepository: typeof User) {
-    }
-
-    async create(dto: CreateUserDto): Promise<User> {
-        return await this.userRepository.create(dto);
     }
 
     async delete(id: number): Promise<null> {
@@ -51,6 +55,10 @@ export class UsersService implements ICommonServices<User, CreateUserDto> {
         return user;
     }
 
+    async create(dto: CreateUserDto): Promise<User> {
+        return await this.userRepository.create(dto);
+    }
+
     async update(id: number, updateModel: UpdateUserDto): Promise<User> {
         let user = await this.userRepository.findOne({ where: { id } });
 
@@ -63,5 +71,14 @@ export class UsersService implements ICommonServices<User, CreateUserDto> {
         await user.save();
 
         return user;
+    }
+
+    async getUserByLogin(login: string) {
+        return await this.userRepository.findOne({
+            where: {
+                login: login
+            },
+            raw: true
+        })
     }
 }

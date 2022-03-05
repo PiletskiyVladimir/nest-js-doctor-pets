@@ -9,9 +9,9 @@ export class DoctorClinics extends Model<DoctorClinics> {
 
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER})
-    userId: number;
+    user_id: number;
 
     @ForeignKey(() => Clinic)
     @Column({type: DataType.INTEGER})
-    clinicId: number;
+    clinic_id: number;
 }

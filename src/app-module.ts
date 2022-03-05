@@ -14,6 +14,8 @@ import { Role } from "./roles/role.model";
 import { UserRoles } from "./user-roles/user-roles.model";
 import { User } from "./users/user.model";
 import { Session } from './sessions/session.model';
+import { AuthModule } from "./auth/auth.module";
+import {SessionsModule} from "./sessions/sessions.module";
 
 @Module({
     providers: [],
@@ -35,9 +37,11 @@ import { Session } from './sessions/session.model';
         }),
         UsersModule,
         ReportsModule,
+        SessionsModule,
         ClinicsModule,
         PetsModule,
-        RolesModule
+        RolesModule,
+        AuthModule
     ],
     exports: []
 })

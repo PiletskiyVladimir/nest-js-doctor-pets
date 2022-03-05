@@ -11,14 +11,20 @@ import {
     Query
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { ICommonMethods } from "../interfaces/methods.interface";
+import {
+    ICreateMethod,
+    IDeleteMethod,
+    IGetAllMethod,
+    IGetByIdMethod,
+    IUpdateMethod
+} from "../interfaces/methods.interface";
 import { User } from "./user.model";
 import { FieldsCheckOutput, Field } from "errors-checker";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
+import { UpdateUserDto } from "../dto/users/update-user.dto";
+import { RegisterUserDto } from "../dto/users/register-user.dto";
 
 @Controller("users")
-export class UsersController implements ICommonMethods<User> {
+export class UsersController implements IGetAllMethod<User>, IGetByIdMethod<User>, IUpdateMethod<User>, IDeleteMethod {
     constructor(private userService: UsersService) {}
 
     @Get()
@@ -54,29 +60,6 @@ export class UsersController implements ICommonMethods<User> {
         if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
 
         return this.userService.getById(id);
-    }
-
-    @Post()
-    async create(@Body() body: any) {
-        let params = [
-            new Field('login', body.login, 'string', false),
-            new Field('password', body.password, 'string', false),
-            new Field('name', body.name, 'string', false),
-            new Field('surname', body.surname, 'string', false)
-        ];
-
-        let {errors, obj} = new FieldsCheckOutput(params).check();
-
-        if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
-
-        let dto: CreateUserDto = {
-            name: obj.name,
-            surname: obj.surname,
-            login: obj.login,
-            password: obj.password
-        }
-
-        return this.userService.create(dto);
     }
 
     @Patch("/:id")
