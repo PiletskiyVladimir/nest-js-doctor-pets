@@ -30,7 +30,7 @@ export class Utils {
         return Utils.cryptPassword(password, passwordSalt) === passwordFromDB;
     }
 
-    public static generateToken (): string {
+    public static generateToken(): string {
         let now = Date.now();
 
         return Md5.init(now);
