@@ -1,9 +1,11 @@
 import {Injectable, CanActivate, ExecutionContext} from "@nestjs/common";
 import {SessionsService} from "../sessions/sessions.service";
+import {UsersService} from "../users/users.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private sessionService: SessionsService) {
+    constructor(private sessionService: SessionsService,
+                private usersService: UsersService) {
     }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -26,7 +28,11 @@ export class AuthGuard implements CanActivate {
 
         if (!session) return false;
 
-        req.user = session.user_id;
+        let user = this.usersService.getById(session.user_id);
+
+        if (!user) return false;
+
+        req.user = user;
 
         return true;
     }

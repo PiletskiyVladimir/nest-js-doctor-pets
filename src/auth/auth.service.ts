@@ -9,6 +9,7 @@ import { TLoginResponse } from "../types";
 import { CreateUserDto } from "../dto/users/create-user.dto";
 import { SessionsService } from "../sessions/sessions.service";
 import { CreateSessionDto } from "../dto/sessions/create-session.dto";
+import {Md5} from "md5-typescript";
 
 @Injectable()
 export class AuthService implements ILoginService, IRegistrationService<User>, ILogoutService {
@@ -50,11 +51,18 @@ export class AuthService implements ILoginService, IRegistrationService<User>, I
     }
 
     async registration(registerUserDto: RegisterUserDto): Promise<User> {
+        let userWithSameLogin = await this.userService.getUserByLogin(registerUserDto.login);
+
+        if (userWithSameLogin) throw new HttpException("User with such login already exists", 403);
+
         let passwordSalt = Utils.generateSalt();
+
+        let password = Md5.init(registerUserDto.password + passwordSalt);
 
         let createUserDto: CreateUserDto = {
             ...registerUserDto,
-            passwordSalt: passwordSalt
+            password: password,
+            password_salt: passwordSalt
         }
 
         return await this.userService.create(createUserDto);
