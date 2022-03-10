@@ -8,11 +8,10 @@ import {
     Param,
     Patch,
     Post,
-    Query
+    Query, UseGuards
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import {
-    ICreateMethod,
     IDeleteMethod,
     IGetAllMethod,
     IGetByIdMethod,
@@ -22,12 +21,14 @@ import { User } from "./user.model";
 import { FieldsCheckOutput, Field } from "errors-checker";
 import { UpdateUserDto } from "../dto/users/update-user.dto";
 import { RegisterUserDto } from "../dto/users/register-user.dto";
+import {AuthGuard} from "../guards/auth.guard";
 
 @Controller("users")
 export class UsersController implements IGetAllMethod<User>, IGetByIdMethod<User>, IUpdateMethod<User>, IDeleteMethod {
     constructor(private userService: UsersService) {}
 
     @Get()
+    @UseGuards(AuthGuard)
     async getAll(@Query() query) {
         let params = [
             new Field('id', query.id, 'numberArr', true),
@@ -50,6 +51,7 @@ export class UsersController implements IGetAllMethod<User>, IGetByIdMethod<User
     }
 
     @Get("/:id")
+    @UseGuards(AuthGuard)
     async getById(@Param("id") id: number) {
         let params = [
             new Field('id', id, 'number', false)
@@ -63,6 +65,7 @@ export class UsersController implements IGetAllMethod<User>, IGetByIdMethod<User
     }
 
     @Patch("/:id")
+    @UseGuards(AuthGuard)
     async update(@Param("id") id: number, @Body() body: any) {
         let params = [
             new Field('id', id, 'number', false),
@@ -85,6 +88,7 @@ export class UsersController implements IGetAllMethod<User>, IGetByIdMethod<User
     }
 
     @Delete("/:id")
+    @UseGuards(AuthGuard)
     async delete(@Param("id") id: number) {
         let params = [
             new Field('id', id, 'number', false)
