@@ -1,10 +1,6 @@
 import {Md5} from 'md5-typescript';
 
 export class Utils {
-    public static addSlashes(string): string {
-        return string.replace(/\\/g, '\\\\').replace(/\u0008/g, '\\b').replace(/\t/g, '\\t').replace(/\n/g, '\\n').replace(/\f/g, '\\f').replace(/\r/g, '\\r').replace(/'/g, '\\\'').replace(/"/g, '\\"');
-    }
-
     public static random(min, max): number {
         let rand = min + Math.random() * (max + 1 - min);
         return Math.floor(rand);
@@ -36,5 +32,3 @@ export class Utils {
         return Md5.init(now);
     }
 }
-
-console.log(Utils.generateToken());
