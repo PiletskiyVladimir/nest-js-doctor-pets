@@ -1,7 +1,7 @@
-import { BelongsToMany, Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
-import { Role } from "../roles/role.model";
-import { UserRoles } from "../user-roles/user-roles.model";
+import {BelongsToMany, Column, DataType, HasMany, HasOne, Model, Table} from "sequelize-typescript";
 import { Pet } from "../pets/pet.model";
+import {Doctor} from "../doctors/doctor.model";
+import {Session} from "../sessions/session.model";
 
 @Table({tableName: 'users'})
 export class User extends Model<User> {
@@ -26,6 +26,9 @@ export class User extends Model<User> {
     @HasMany(() => Pet)
     pets: Pet[];
 
-    @BelongsToMany(() => Role, () => UserRoles)
-    roles: Role[];
+    @HasOne(() => Doctor)
+    doctor: Doctor
+
+    @HasMany(() => Session)
+    sessions: Session[]
 }

@@ -5,17 +5,16 @@ import { ReportsModule } from "./reports/reports.module";
 import { ClinicsModule } from "./clinics/clinics.module";
 import { PetsModule } from "./pets/pets.module";
 import { ConfigModule } from "@nestjs/config";
-import { RolesModule } from "./roles/roles.module";
 import { Clinic } from "./clinics/clinic.model";
 import { Pet } from "./pets/pet.model";
 import { Report } from "./reports/report.model";
 import { DoctorClinics } from "./doctor-clinics/doctor-clinics.model";
-import { Role } from "./roles/role.model";
-import { UserRoles } from "./user-roles/user-roles.model";
 import { User } from "./users/user.model";
 import { Session } from './sessions/session.model';
 import { AuthModule } from "./auth/auth.module";
 import {SessionsModule} from "./sessions/sessions.module";
+import {Doctor} from "./doctors/doctor.model";
+import {DoctorPets} from "./doctor-pets/doctor-pets.model";
 
 @Module({
     providers: [],
@@ -31,7 +30,7 @@ import {SessionsModule} from "./sessions/sessions.module";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [Clinic, Pet, Report, DoctorClinics, Role, UserRoles, User, Session],
+            models: [Clinic, Pet, Report, DoctorClinics, DoctorPets, User, Session, Doctor],
             autoLoadModels: true,
             logging: false
         }),
@@ -40,7 +39,6 @@ import {SessionsModule} from "./sessions/sessions.module";
         SessionsModule,
         ClinicsModule,
         PetsModule,
-        RolesModule,
         AuthModule
     ],
     exports: []

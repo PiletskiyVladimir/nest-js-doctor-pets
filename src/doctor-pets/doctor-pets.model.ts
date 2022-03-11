@@ -1,10 +1,9 @@
 import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { User } from "../users/user.model";
-import { Clinic } from "../clinics/clinic.model";
 import {Doctor} from "../doctors/doctor.model";
+import {Pet} from "../pets/pet.model";
 
-@Table({tableName: 'doctor_clinics'})
-export class DoctorClinics extends Model<DoctorClinics> {
+@Table({tableName: 'doctor_pets'})
+export class DoctorPets extends Model<DoctorPets> {
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true, allowNull: false})
     id: number;
 
@@ -12,7 +11,7 @@ export class DoctorClinics extends Model<DoctorClinics> {
     @Column({type: DataType.INTEGER})
     doctor_id: number;
 
-    @ForeignKey(() => Clinic)
+    @ForeignKey(() => Pet)
     @Column({type: DataType.INTEGER})
-    clinic_id: number;
+    pet_id: number;
 }
