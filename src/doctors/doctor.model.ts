@@ -15,14 +15,18 @@ export class Doctor extends Model<Doctor> {
     @Column({type: DataType.INTEGER})
     user_id: number;
 
+    @Column({type: DataType.DATEONLY})
+    career_start: string;
+
+    @Column({type: DataType.STRING})
+    specialization: string;
+
     @BelongsToMany(() => Clinic, () => DoctorClinics)
-    clinics: Clinic[]
+    clinics: Clinic[];
 
     @BelongsToMany(() => Pet, () => DoctorPets)
-    pets: Pet[]
+    pets: Pet[];
 
     @HasMany(() => Report)
-    reports: Report[]
-
-    // TODO add info about doctor
+    reports: Report[];
 }
