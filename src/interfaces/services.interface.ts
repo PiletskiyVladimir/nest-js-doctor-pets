@@ -18,8 +18,8 @@ export interface ICreateService<T, DTO> {
     create(dto: DTO): Promise<T>;
 }
 
-export interface IUpdateService<T> {
-    update(id: number, updateModel: T): Promise<T>;
+export interface IUpdateService<T, DTO> {
+    update(id: number, updateModel: DTO): Promise<T>;
 }
 
 export interface IDeleteService {

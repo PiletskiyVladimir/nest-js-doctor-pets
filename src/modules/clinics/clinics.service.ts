@@ -7,12 +7,12 @@ import {
     IUpdateService
 } from "../../interfaces/services.interface";
 import {Clinic} from "./clinic.model";
-import {CreateClinicDto} from "../../dto/clinics/create-clinic.dto";
+import {ClinicDto} from "../../dto/clinics/clinic.dto";
 import {TQuerySettings} from "../../types";
 
 @Injectable()
-export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<Clinic>, ICreateService<Clinic, CreateClinicDto>, IUpdateService<Clinic>, IDeleteService {
-    async create(dto: CreateClinicDto): Promise<Clinic> {
+export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<Clinic>, ICreateService<Clinic, ClinicDto>, IUpdateService<Clinic, ClinicDto>, IDeleteService {
+    async create(dto: ClinicDto): Promise<Clinic> {
         return Promise.resolve(undefined);
     }
 
@@ -28,7 +28,7 @@ export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<C
         return Promise.resolve(undefined);
     }
 
-    async update(id: number, updateModel: Clinic): Promise<Clinic> {
+    async update(id: number, updateModel: ClinicDto): Promise<Clinic> {
         return Promise.resolve(undefined);
     }
 }

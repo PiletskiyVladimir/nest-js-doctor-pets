@@ -14,7 +14,7 @@ import { TQuerySettings } from "../../types";
 import { CreateUserDto } from "../../dto/users/create-user.dto";
 
 @Injectable()
-export class UsersService implements IGetAllService<User>, IGetByIdService<User>, IUpdateService<User>, IDeleteService, ICreateService<User, RegisterUserDto> {
+export class UsersService implements IGetAllService<User>, IGetByIdService<User>, IUpdateService<User, UpdateUserDto>, IDeleteService, ICreateService<User, RegisterUserDto> {
     constructor(@InjectModel(User) private userRepository: typeof User) {
     }
 

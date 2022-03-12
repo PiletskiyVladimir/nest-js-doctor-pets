@@ -1,4 +1,4 @@
-export class CreateClinicDto {
+export class ClinicDto {
     readonly address: string;
     readonly name: string;
     readonly createdAt: string;
