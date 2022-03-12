@@ -1,6 +1,6 @@
 import {Injectable, CanActivate, ExecutionContext, UnauthorizedException} from "@nestjs/common";
-import {SessionsService} from "../sessions/sessions.service";
-import {UsersService} from "../users/users.service";
+import {SessionsService} from "../modules/sessions/sessions.service";
+import {UsersService} from "../modules/users/users.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {

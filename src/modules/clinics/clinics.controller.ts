@@ -1,32 +1,40 @@
-import {Controller} from '@nestjs/common';
+import {Body, Controller, Param, Query} from '@nestjs/common';
 import {
     ICreateMethod,
     IDeleteMethod,
     IGetAllMethod,
     IGetByIdMethod,
     IUpdateMethod
-} from "../interfaces/methods.interface";
+} from "../../interfaces/methods.interface";
 import {Clinic} from "./clinic.model";
 
 @Controller('clinics')
 export class ClinicsController implements IGetAllMethod<Clinic>, IGetByIdMethod<Clinic>, ICreateMethod<Clinic>, IUpdateMethod<Clinic>, IDeleteMethod {
-    async create(body: any) {
+    async create(@Body() body: any) {
         return Promise.resolve(undefined);
     }
 
-    async delete(id: number) {
+    async delete(@Param("id") id: number) {
         return Promise.resolve(undefined);
     }
 
-    async getAll(query: { [p: string]: any }) {
+    async getAll(@Query() query) {
         return Promise.resolve(undefined);
     }
 
-    async getById(id: number) {
+    async getById(@Param("id") id: number) {
         return Promise.resolve(undefined);
     }
 
-    async update(id: number, updateBody: any) {
+    async update(@Param("id") id: number, @Body() body: any) {
+        return Promise.resolve(undefined);
+    }
+
+    async assignDoctor(@Param("id") id: number) {
+        return Promise.resolve(undefined);
+    }
+
+    async dismissDoctor(@Param("id") id: number) {
         return Promise.resolve(undefined);
     }
 }

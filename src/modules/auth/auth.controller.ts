@@ -1,10 +1,10 @@
 import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Field, FieldsCheckOutput } from "errors-checker";
-import { RegisterUserDto } from "../dto/users/register-user.dto";
-import { ILoginMethod, IRegistrationMethod, ILogoutMethod } from "../interfaces/methods.interface";
+import { RegisterUserDto } from "../../dto/users/register-user.dto";
+import { ILoginMethod, IRegistrationMethod, ILogoutMethod } from "../../interfaces/methods.interface";
 import { User } from "../users/user.model";
-import { LoginUserDto } from "../dto/users/login-user.dto";
+import { LoginUserDto } from "../../dto/users/login-user.dto";
 
 @Controller("auth")
 export class AuthController implements ILoginMethod, IRegistrationMethod<User>, ILogoutMethod {

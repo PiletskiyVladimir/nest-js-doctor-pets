@@ -5,10 +5,10 @@ import {
     IGetAllService,
     IGetByIdService,
     IUpdateService
-} from "../interfaces/services.interface";
+} from "../../interfaces/services.interface";
 import {Clinic} from "./clinic.model";
-import {CreateClinicDto} from "../dto/clinics/create-clinic.dto";
-import {TQuerySettings} from "../types";
+import {CreateClinicDto} from "../../dto/clinics/create-clinic.dto";
+import {TQuerySettings} from "../../types";
 
 @Injectable()
 export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<Clinic>, ICreateService<Clinic, CreateClinicDto>, IUpdateService<Clinic>, IDeleteService {

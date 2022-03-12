@@ -5,13 +5,13 @@ import {
     IGetByIdService,
     IUpdateService,
     ICreateService
-} from "../interfaces/services.interface";
+} from "../../interfaces/services.interface";
 import { User } from "./user.model";
 import { InjectModel } from "@nestjs/sequelize";
-import { UpdateUserDto } from "../dto/users/update-user.dto";
-import { RegisterUserDto } from "../dto/users/register-user.dto";
-import { TQuerySettings } from "../types";
-import { CreateUserDto } from "../dto/users/create-user.dto";
+import { UpdateUserDto } from "../../dto/users/update-user.dto";
+import { RegisterUserDto } from "../../dto/users/register-user.dto";
+import { TQuerySettings } from "../../types";
+import { CreateUserDto } from "../../dto/users/create-user.dto";
 
 @Injectable()
 export class UsersService implements IGetAllService<User>, IGetByIdService<User>, IUpdateService<User>, IDeleteService, ICreateService<User, RegisterUserDto> {

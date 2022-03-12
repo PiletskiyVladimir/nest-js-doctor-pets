@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Session } from "./session.model";
-import { ICreateService, IDeleteService, IGetByIdService, IGetByValueService } from "../interfaces/services.interface";
-import { CreateSessionDto } from "../dto/sessions/create-session.dto";
+import { ICreateService, IDeleteService, IGetByIdService, IGetByValueService } from "../../interfaces/services.interface";
+import { CreateSessionDto } from "../../dto/sessions/create-session.dto";
 
 @Injectable()
 export class SessionsService implements IGetByIdService<Session>, ICreateService<Session, CreateSessionDto>, IDeleteService, IGetByValueService<Session> {
