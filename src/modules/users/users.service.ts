@@ -56,6 +56,10 @@ export class UsersService implements IGetAllService<User>, IGetByIdService<User>
     }
 
     async create(dto: CreateUserDto): Promise<User> {
+        let userWithSameLogin = await this.getUserByLogin(dto.login);
+
+        if (userWithSameLogin) throw new HttpException("User with such login already exists", 403);
+
         return await this.userRepository.create(dto);
     }
 

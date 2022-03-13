@@ -51,10 +51,6 @@ export class AuthService implements ILoginService, IRegistrationService<User>, I
     }
 
     async registration(registerUserDto: RegisterUserDto): Promise<User> {
-        let userWithSameLogin = await this.userService.getUserByLogin(registerUserDto.login);
-
-        if (userWithSameLogin) throw new HttpException("User with such login already exists", 403);
-
         let passwordSalt = Utils.generateSalt();
 
         let password = Md5.init(registerUserDto.password + passwordSalt);

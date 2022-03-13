@@ -18,6 +18,15 @@ export class DoctorClinicsService implements ICreateService<DoctorClinics, Docto
     }
 
     async create(dto: DoctorClinicsDto): Promise<DoctorClinics> {
+        let doctorClinicRecord = await this.doctorClinicsRepository.findOne({
+            where: {
+                doctor_id: dto.doctor_id,
+                clinic_id: dto.clinic_id
+            }
+        });
+
+        if (doctorClinicRecord) throw new HttpException("Such record already exists", 403);
+
         return await this.doctorClinicsRepository.create(dto);
     }
 
@@ -61,7 +70,7 @@ export class DoctorClinicsService implements ICreateService<DoctorClinics, Docto
     async update(id: number, updateModel: DoctorClinicsDto): Promise<DoctorClinics> {
         let doctorClinic = await this.doctorClinicsRepository.findOne({ where: { id } });
 
-        if (!doctorClinic) throw new HttpException("User not found", 404);
+        if (!doctorClinic) throw new HttpException("Doctor clinic not found", 404);
 
         for (let prop in updateModel) {
             doctorClinic[prop] = updateModel[prop];
