@@ -10,7 +10,6 @@ import {DoctorPets} from "./doctor-pets.model";
 import {DoctorPetsDto} from "../dto/doctor-pets/doctor-pets.dto";
 import {TQuerySettings} from "../types";
 import {InjectModel} from "@nestjs/sequelize";
-import {User} from "../users.module/user.model";
 
 @Injectable()
 export class DoctorPetsService implements ICreateService<DoctorPets, DoctorPetsDto>, IGetByIdService<DoctorPets>, IGetAllService<DoctorPets>, IUpdateService<DoctorPets, DoctorPets>, IDeleteService {

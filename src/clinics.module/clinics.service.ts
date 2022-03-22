@@ -79,4 +79,20 @@ export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<C
 
         return clinic;
     }
+
+    async assignDoctor(doctorId: number, clinicId: number) {
+        let doctor = await this.clinicsRepository.findOne({
+            where: {
+                id: doctorId
+            }
+        })
+
+        if (!doctor) throw new HttpException("Doctor not found", 404);
+
+        // let clinic = await th
+    }
+
+    async dismissDoctor(doctorId: number, clinicId: number) {
+
+    }
 }

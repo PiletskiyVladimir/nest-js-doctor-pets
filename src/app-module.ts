@@ -1,17 +1,17 @@
-import { Module } from "@nestjs/common";
-import { SequelizeModule } from "@nestjs/sequelize";
-import { UsersModule } from "./users.module/users.module";
-import { ReportsModule } from "./reports.module/reports.module";
-import { ClinicsModule } from "./clinics.module/clinics.module";
-import { PetsModule } from "./pets.module/pets.module";
-import { ConfigModule } from "@nestjs/config";
-import { Clinic } from "./clinics.module/clinic.model";
-import { Pet } from "./pets.module/pet.model";
-import { Report } from "./reports.module/report.model";
-import { DoctorClinics } from "./doctor-clinics.module/doctor-clinics.model";
-import { User } from "./users.module/user.model";
-import { Session } from './sessions.module/session.model';
-import { AuthModule } from "./auth.module/auth.module";
+import {Module} from "@nestjs/common";
+import {SequelizeModule} from "@nestjs/sequelize";
+import {UsersModule} from "./users.module/users.module";
+import {ReportsModule} from "./reports.module/reports.module";
+import {ClinicsModule} from "./clinics.module/clinics.module";
+import {PetsModule} from "./pets.module/pets.module";
+import {ConfigModule} from "@nestjs/config";
+import {Clinic} from "./clinics.module/clinic.model";
+import {Pet} from "./pets.module/pet.model";
+import {Report} from "./reports.module/report.model";
+import {DoctorClinics} from "./doctor-clinics.module/doctor-clinics.model";
+import {User} from "./users.module/user.model";
+import {Session} from './sessions.module/session.model';
+import {AuthModule} from "./auth.module/auth.module";
 import {SessionsModule} from "./sessions.module/sessions.module";
 import {Doctor} from "./doctors.module/doctor.model";
 import {DoctorPets} from "./doctor-pets.module/doctor-pets.model";
@@ -45,4 +45,5 @@ import {DoctorClinicsModule} from "./doctor-clinics.module/doctor-clinics.module
     ],
     exports: []
 })
-export class AppModule {}
+export class AppModule {
+}

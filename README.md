@@ -18,3 +18,10 @@ Test project technical task
    5. Doctor (belongsToMany) M:M Clinic (belongsToMany) ✓
    6. Doctor 1:M Report ✓
    7. Pet 1:M Report ✓
+
+TODO:
+1. Method to create report
+2. Method to take the animal to doctor
+3. Method to assign doctor to clinic
+4. Method to dismiss doctor from clinic
+5. All clinic controller
