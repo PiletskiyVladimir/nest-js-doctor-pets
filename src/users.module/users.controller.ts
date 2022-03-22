@@ -16,12 +16,12 @@ import {
     IGetAllMethod,
     IGetByIdMethod,
     IUpdateMethod
-} from "../../interfaces/methods.interface";
+} from "../interfaces/methods.interface";
 import { User } from "./user.model";
 import { FieldsCheckOutput, Field } from "errors-checker";
-import { UpdateUserDto } from "../../dto/users/update-user.dto";
-import { RegisterUserDto } from "../../dto/users/register-user.dto";
-import {AuthGuard} from "../../guards/auth.guard";
+import { UpdateUserDto } from "../dto/users/update-user.dto";
+import { RegisterUserDto } from "../dto/users/register-user.dto";
+import {AuthGuard} from "../guards/auth.guard";
 
 @Controller("users")
 export class UsersController implements IGetAllMethod<User>, IGetByIdMethod<User>, IUpdateMethod<User>, IDeleteMethod {

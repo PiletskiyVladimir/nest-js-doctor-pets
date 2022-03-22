@@ -5,10 +5,10 @@ import {
     IGetAllService,
     IGetByIdService,
     IUpdateService
-} from "../../interfaces/services.interface";
+} from "../interfaces/services.interface";
 import {Clinic} from "./clinic.model";
-import {ClinicDto} from "../../dto/clinics/clinic.dto";
-import {TQuerySettings} from "../../types";
+import {ClinicDto} from "../dto/clinics/clinic.dto";
+import {TQuerySettings} from "../types";
 import {InjectModel} from "@nestjs/sequelize";
 
 @Injectable()

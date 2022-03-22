@@ -1,6 +1,6 @@
 import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Doctor} from "../doctors/doctor.model";
-import {Pet} from "../pets/pet.model";
+import {Doctor} from "../doctors.module/doctor.model";
+import {Pet} from "../pets.module/pet.model";
 
 @Table({tableName: 'doctor_pets'})
 export class DoctorPets extends Model<DoctorPets> {

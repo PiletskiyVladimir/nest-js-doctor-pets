@@ -5,7 +5,7 @@ import {
     IGetAllMethod,
     IGetByIdMethod,
     IUpdateMethod
-} from "../../interfaces/methods.interface";
+} from "../interfaces/methods.interface";
 import {Clinic} from "./clinic.model";
 
 @Controller('clinics')

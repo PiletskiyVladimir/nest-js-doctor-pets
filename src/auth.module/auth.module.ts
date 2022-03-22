@@ -2,10 +2,10 @@ import { forwardRef, Module } from "@nestjs/common";
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { SequelizeModule } from "@nestjs/sequelize";
-import { User } from "../users/user.model";
-import { UsersModule } from "../users/users.module";
-import {SessionsService} from "../sessions/sessions.service";
-import {SessionsModule} from "../sessions/sessions.module";
+import { User } from "../users.module/user.model";
+import { UsersModule } from "../users.module/users.module";
+import {SessionsService} from "../sessions.module/sessions.service";
+import {SessionsModule} from "../sessions.module/sessions.module";
 
 @Module({
   controllers: [AuthController],

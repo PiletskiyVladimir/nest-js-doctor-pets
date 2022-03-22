@@ -1,14 +1,14 @@
 import { HttpException, Injectable } from "@nestjs/common";
-import { UsersService } from "../users/users.service";
-import { ILoginService, ILogoutService, IRegistrationService } from "../../interfaces/services.interface";
-import { User } from "../users/user.model";
-import { RegisterUserDto } from "../../dto/users/register-user.dto";
-import { LoginUserDto } from "../../dto/users/login-user.dto";
-import { Utils } from "../../utils/utils.class";
-import { TLoginResponse } from "../../types";
-import { CreateUserDto } from "../../dto/users/create-user.dto";
-import { SessionsService } from "../sessions/sessions.service";
-import { CreateSessionDto } from "../../dto/sessions/create-session.dto";
+import { UsersService } from "../users.module/users.service";
+import { ILoginService, ILogoutService, IRegistrationService } from "../interfaces/services.interface";
+import { User } from "../users.module/user.model";
+import { RegisterUserDto } from "../dto/users/register-user.dto";
+import { LoginUserDto } from "../dto/users/login-user.dto";
+import { Utils } from "../utils/utils.class";
+import { TLoginResponse } from "../types";
+import { CreateUserDto } from "../dto/users/create-user.dto";
+import { SessionsService } from "../sessions.module/sessions.service";
+import { CreateSessionDto } from "../dto/sessions/create-session.dto";
 import {Md5} from "md5-typescript";
 
 @Injectable()

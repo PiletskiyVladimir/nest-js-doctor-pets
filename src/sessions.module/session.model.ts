@@ -1,5 +1,5 @@
 import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { User } from "../users/user.model";
+import { User } from "../users.module/user.model";
 
 @Table({tableName: 'sessions'})
 export class Session extends Model<Session> {

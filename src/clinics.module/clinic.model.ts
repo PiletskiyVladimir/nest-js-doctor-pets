@@ -1,6 +1,6 @@
 import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
-import {DoctorClinics} from "../doctor-clinics/doctor-clinics.model";
-import {Doctor} from "../doctors/doctor.model";
+import {DoctorClinics} from "../doctor-clinics.module/doctor-clinics.model";
+import {Doctor} from "../doctors.module/doctor.model";
 
 @Table({tableName: 'clinics'})
 export class Clinic extends Model<Clinic> {

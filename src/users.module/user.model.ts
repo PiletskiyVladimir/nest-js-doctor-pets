@@ -1,7 +1,7 @@
 import {BelongsToMany, Column, DataType, HasMany, HasOne, Model, Table} from "sequelize-typescript";
-import { Pet } from "../pets/pet.model";
-import {Doctor} from "../doctors/doctor.model";
-import {Session} from "../sessions/session.model";
+import { Pet } from "../pets.module/pet.model";
+import {Doctor} from "../doctors.module/doctor.model";
+import {Session} from "../sessions.module/session.model";
 
 @Table({tableName: 'users'})
 export class User extends Model<User> {

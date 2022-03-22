@@ -1,10 +1,10 @@
 import {BelongsToMany, Column, DataType, ForeignKey, HasMany, Model, Table} from "sequelize-typescript";
-import {User} from "../users/user.model";
-import {Clinic} from "../clinics/clinic.model";
-import {DoctorClinics} from "../doctor-clinics/doctor-clinics.model";
-import {Pet} from "../pets/pet.model";
-import {DoctorPets} from "../doctor-pets/doctor-pets.model";
-import {Report} from "../reports/report.model";
+import {User} from "../users.module/user.model";
+import {Clinic} from "../clinics.module/clinic.model";
+import {DoctorClinics} from "../doctor-clinics.module/doctor-clinics.model";
+import {Pet} from "../pets.module/pet.model";
+import {DoctorPets} from "../doctor-pets.module/doctor-pets.model";
+import {Report} from "../reports.module/report.model";
 
 @Table({tableName: 'doctors'})
 export class Doctor extends Model<Doctor> {

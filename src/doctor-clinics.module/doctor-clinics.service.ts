@@ -5,12 +5,11 @@ import {
     IGetAllService,
     IGetByIdService,
     IUpdateService
-} from "../../interfaces/services.interface";
+} from "../interfaces/services.interface";
 import {DoctorClinics} from "./doctor-clinics.model";
-import {DoctorClinicsDto} from "../../dto/doctor-clinics/doctor-clinics.dto";
-import {TQuerySettings} from "../../types";
+import {DoctorClinicsDto} from "../dto/doctor-clinics/doctor-clinics.dto";
+import {TQuerySettings} from "../types";
 import {InjectModel} from "@nestjs/sequelize";
-import {User} from "../users/user.model";
 
 @Injectable()
 export class DoctorClinicsService implements ICreateService<DoctorClinics, DoctorClinicsDto>, IGetByIdService<DoctorClinics>, IGetAllService<DoctorClinics>, IUpdateService<DoctorClinics, DoctorClinicsDto>, IDeleteService {

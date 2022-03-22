@@ -1,7 +1,7 @@
 import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { User } from "../users/user.model";
-import { Clinic } from "../clinics/clinic.model";
-import {Doctor} from "../doctors/doctor.model";
+import { User } from "../users.module/user.model";
+import { Clinic } from "../clinics.module/clinic.model";
+import {Doctor} from "../doctors.module/doctor.model";
 
 @Table({tableName: 'doctor_clinics'})
 export class DoctorClinics extends Model<DoctorClinics> {
