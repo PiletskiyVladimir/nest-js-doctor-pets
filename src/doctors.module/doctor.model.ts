@@ -16,7 +16,7 @@ export class Doctor extends Model<Doctor> {
     user_id: number;
 
     @Column({type: DataType.DATEONLY})
-    career_start: string;
+    career_start: Date;
 
     @Column({type: DataType.STRING})
     specialization: string;

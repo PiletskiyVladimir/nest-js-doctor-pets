@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Doctor} from "./doctor.model";
 import {
@@ -20,25 +20,62 @@ export class DoctorsService implements  ICreateService<Doctor, DoctorDto>,
     constructor(@InjectModel(Doctor) private doctorRepository: typeof Doctor) {
     }
 
-    create(dto: DoctorDto): Promise<Doctor> {
-        return Promise.resolve(undefined);
+    async create(dto: DoctorDto): Promise<Doctor> {
+        let doctorWithSameUserId = await this.doctorRepository.findOne({where: {user_id: dto.user_id}});
+
+        if (doctorWithSameUserId) throw new HttpException("Doctor with such user id already exists", 403);
+
+        return await this.doctorRepository.create(dto);
     }
 
-    delete(id: number): Promise<null> {
-        return Promise.resolve(null);
+    async delete(id: number): Promise<null> {
+        let doctor = await this.doctorRepository.findOne({where: {id}});
+
+        if (!doctor) throw new HttpException("Doctor not found", 404);
+
+        await this.doctorRepository.destroy({where: {id}})
+
+        return null;
     }
 
-    getAll(querySettings: TQuerySettings): Promise<Doctor[]> {
-        return Promise.resolve([]);
+    async getAll({
+                     offset,
+                     limit,
+                     sortField,
+                     sortType,
+                     query,
+                     raw = false,
+                     attributes = undefined
+                 }: TQuerySettings): Promise<Doctor[]> {
+        return await this.doctorRepository.findAll({
+            where: query,
+            offset: offset,
+            limit: limit,
+            order: [[sortField, sortType]],
+            raw: raw,
+            attributes: attributes
+        });
     }
 
-    getById(id: number): Promise<Doctor> {
-        return Promise.resolve(undefined);
+    async getById(id: number): Promise<Doctor> {
+        let doctor = await this.doctorRepository.findOne({ where: { id } });
+
+        if (!doctor) throw new HttpException("Doctor not found", 404);
+
+        return doctor;
     }
 
-    update(id: number, updateModel: DoctorDto): Promise<Doctor> {
-        return Promise.resolve(undefined);
+    async update(id: number, updateModel: DoctorDto): Promise<Doctor> {
+        let doctor = await this.doctorRepository.findOne({ where: { id } });
+
+        if (!doctor) throw new HttpException("Doctor not found", 404);
+
+        for (let prop in updateModel) {
+            doctor[prop] = updateModel[prop];
+        }
+
+        await doctor.save();
+
+        return doctor;
     }
-
-
 }
