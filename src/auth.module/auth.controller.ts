@@ -1,6 +1,6 @@
 import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { Field, FieldsCheckOutput } from "errors-checker";
+import { FieldCheck, StringField } from "errors-checker";
 import { RegisterUserDto } from "../dto/users/register-user.dto";
 import { ILoginMethod, IRegistrationMethod, ILogoutMethod } from "../interfaces/methods.interface";
 import { User } from "../users.module/user.model";
@@ -14,11 +14,11 @@ export class AuthController implements ILoginMethod, IRegistrationMethod<User>, 
     @Post('/login')
     async login(@Body() body: any) {
         let params = [
-            new Field('login', body.login, 'string', false),
-            new Field('password', body.password, 'string', false)
+            new StringField('login', body.login, false),
+            new StringField('password', body.password, false)
         ];
 
-        let {errors, obj} = new FieldsCheckOutput(params).check();
+        let {errors, obj} = new FieldCheck(params).check();
 
         if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
 
@@ -33,10 +33,10 @@ export class AuthController implements ILoginMethod, IRegistrationMethod<User>, 
     @Post('/logout')
     async logout(@Body() body: any) {
         let params = [
-            new Field('token', body.token, 'string', false)
+            new StringField('token', body.token, false)
         ];
 
-        let {errors, obj} = new FieldsCheckOutput(params).check();
+        let {errors, obj} = new FieldCheck(params).check();
 
         if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
 
@@ -46,13 +46,13 @@ export class AuthController implements ILoginMethod, IRegistrationMethod<User>, 
     @Post('/register')
     async registration(@Body() body: any) {
         let params = [
-            new Field('login', body.login, 'string', false),
-            new Field('password', body.password, 'string', false),
-            new Field('name', body.name, 'string', false),
-            new Field('surname', body.surname, 'string', false)
+            new StringField('login', body.login, false),
+            new StringField('password', body.password, false),
+            new StringField('name', body.name, false),
+            new StringField('surname', body.surname, false)
         ];
 
-        let {errors, obj} = new FieldsCheckOutput(params).check();
+        let {errors, obj} = new FieldCheck(params).check();
 
         if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
 
