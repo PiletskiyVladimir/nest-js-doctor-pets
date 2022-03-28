@@ -10,10 +10,15 @@ import {Clinic} from "./clinic.model";
 import {ClinicDto} from "../dto/clinics/clinic.dto";
 import {TQuerySettings} from "../types";
 import {InjectModel} from "@nestjs/sequelize";
+import {DoctorClinicsService} from "../doctor-clinics.module/doctor-clinics.service";
+import {DoctorClinics} from "../doctor-clinics.module/doctor-clinics.model";
 
 @Injectable()
 export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<Clinic>, ICreateService<Clinic, ClinicDto>, IUpdateService<Clinic, ClinicDto>, IDeleteService {
-    constructor(@InjectModel(Clinic) private clinicsRepository: typeof Clinic) {
+    constructor(
+        @InjectModel(Clinic) private clinicsRepository: typeof Clinic,
+        private doctorClinicsService: DoctorClinicsService
+    ) {
     }
 
     async create(dto: ClinicDto): Promise<Clinic> {
@@ -59,7 +64,7 @@ export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<C
     }
 
     async getById(id: number): Promise<Clinic> {
-        let clinic = await this.clinicsRepository.findOne({ where: { id } });
+        let clinic = await this.clinicsRepository.findOne({where: {id}});
 
         if (!clinic) throw new HttpException("Clinic record not found", 404);
 
@@ -67,7 +72,7 @@ export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<C
     }
 
     async update(id: number, updateModel: ClinicDto): Promise<Clinic> {
-        let clinic = await this.clinicsRepository.findOne({ where: { id } });
+        let clinic = await this.clinicsRepository.findOne({where: {id}});
 
         if (!clinic) throw new HttpException("Doctor clinic not found", 404);
 
@@ -80,19 +85,13 @@ export class ClinicsService implements IGetAllService<Clinic>, IGetByIdService<C
         return clinic;
     }
 
-    async assignDoctor(doctorId: number, clinicId: number) {
-        let doctor = await this.clinicsRepository.findOne({
-            where: {
-                id: doctorId
-            }
+    async assignDoctor(doctorId: number, clinicId: number): Promise<DoctorClinics> {
+        return this.doctorClinicsService.create({
+            doctor_id: doctorId, clinic_id: clinicId
         })
-
-        if (!doctor) throw new HttpException("Doctor not found", 404);
-
-        // let clinic = await th
     }
 
-    async dismissDoctor(doctorId: number, clinicId: number) {
-
+    async dismissDoctor(doctorId: number, clinicId: number): Promise<null> {
+        return this.doctorClinicsService.deleteByDoctorAndClinicId(doctorId, clinicId)
     }
 }
