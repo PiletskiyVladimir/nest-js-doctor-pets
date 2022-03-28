@@ -16,6 +16,7 @@ import {SessionsModule} from "./sessions.module/sessions.module";
 import {Doctor} from "./doctors.module/doctor.model";
 import {DoctorPets} from "./doctor-pets.module/doctor-pets.model";
 import {DoctorClinicsModule} from "./doctor-clinics.module/doctor-clinics.module";
+import {DoctorsModule} from "./doctors.module/doctors.module";
 
 @Module({
     providers: [],
@@ -41,6 +42,7 @@ import {DoctorClinicsModule} from "./doctor-clinics.module/doctor-clinics.module
         ClinicsModule,
         PetsModule,
         AuthModule,
+        DoctorsModule,
         DoctorClinicsModule
     ],
     exports: []
