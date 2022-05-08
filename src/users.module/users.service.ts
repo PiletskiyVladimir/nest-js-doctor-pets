@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import {HttpException, Injectable} from "@nestjs/common";
 import {
     IDeleteService,
     IGetAllService,
@@ -6,12 +6,12 @@ import {
     IUpdateService,
     ICreateService
 } from "../interfaces/services.interface";
-import { User } from "./user.model";
-import { InjectModel } from "@nestjs/sequelize";
-import { UpdateUserDto } from "../dto/users/update-user.dto";
-import { RegisterUserDto } from "../dto/users/register-user.dto";
-import { TQuerySettings } from "../types";
-import { CreateUserDto } from "../dto/users/create-user.dto";
+import {User} from "./user.model";
+import {InjectModel} from "@nestjs/sequelize";
+import {UpdateUserDto} from "../dto/users/update-user.dto";
+import {RegisterUserDto} from "../dto/users/register-user.dto";
+import {TQuerySettings} from "../core/types";
+import {CreateUserDto} from "../dto/users/create-user.dto";
 
 @Injectable()
 export class UsersService implements IGetAllService<User>, IGetByIdService<User>, IUpdateService<User, UpdateUserDto>, IDeleteService, ICreateService<User, RegisterUserDto> {
@@ -19,11 +19,11 @@ export class UsersService implements IGetAllService<User>, IGetByIdService<User>
     }
 
     async delete(id: number): Promise<null> {
-        let user = await this.userRepository.findOne({ where: { id } });
+        let user = await this.userRepository.findOne({where: {id}});
 
         if (!user) throw new HttpException("User not found", 404);
 
-        await this.userRepository.destroy({ where: { id } });
+        await this.userRepository.destroy({where: {id}});
 
         return null;
     }
@@ -48,7 +48,7 @@ export class UsersService implements IGetAllService<User>, IGetByIdService<User>
     }
 
     async getById(id: number): Promise<User> {
-        let user = await this.userRepository.findOne({ where: { id } });
+        let user = await this.userRepository.findOne({where: {id}});
 
         if (!user) throw new HttpException("User not found", 404);
 
@@ -64,7 +64,7 @@ export class UsersService implements IGetAllService<User>, IGetByIdService<User>
     }
 
     async update(id: number, updateModel: UpdateUserDto): Promise<User> {
-        let user = await this.userRepository.findOne({ where: { id } });
+        let user = await this.userRepository.findOne({where: {id}});
 
         if (!user) throw new HttpException("User not found", 404);
 
