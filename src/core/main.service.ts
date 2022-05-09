@@ -21,22 +21,25 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
         result: Array<MODEL>,
         totalCount: number
     }> {
-        let entitiesList = await this.repository.findAll({
-            where: query,
-            offset: offset,
-            limit: limit,
-            order: [[sortField, sortType]],
-            raw: raw,
-            attributes: attributes
-        });
+        let promiseAllArr = [
+            this.repository.findAll({
+                where: query,
+                offset: offset,
+                limit: limit,
+                order: [[sortField, sortType]],
+                raw: raw,
+                attributes: attributes
+            }),
+            this.repository.count({
+                where: query
+            })
+        ];
 
-        let count = await this.repository.count({
-            where: query
-        });
+        let result = await Promise.all(promiseAllArr);
 
         return {
-            result: entitiesList,
-            totalCount: count
+            result: result[0],
+            totalCount: result[1]
         }
     }
 
