@@ -12,7 +12,7 @@ import {ClinicDto} from "../dto/clinics/clinic.dto";
 import {ClinicsService} from "./clinics.service";
 
 @Controller('clinics')
-export class ClinicsController implements IGetAllMethod<Clinic>, IGetByIdMethod<Clinic>, ICreateMethod<Clinic>, IUpdateMethod<Clinic>, IDeleteMethod {
+export class ClinicsController {
     constructor(private clinicService: ClinicsService) {
     }
 
@@ -79,7 +79,7 @@ export class ClinicsController implements IGetAllMethod<Clinic>, IGetByIdMethod<
 
         if (errors.length > 0) throw new HttpException({errors: errors}, HttpStatus.BAD_REQUEST);
 
-        return this.clinicService.getById(id);
+        return this.clinicService.getEntity(id);
     }
 
     @Patch('/:id')
