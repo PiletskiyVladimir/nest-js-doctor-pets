@@ -8,7 +8,7 @@ import {
 } from "../interfaces/services.interface";
 import {DoctorClinics} from "./doctor-clinics.model";
 import {DoctorClinicsDto} from "../dto/doctor-clinics/doctor-clinics.dto";
-import {TQuerySettings} from "../types";
+import {TQuerySettings} from "../core/types";
 import {InjectModel} from "@nestjs/sequelize";
 import {Doctor} from "../doctors.module/doctor.model";
 import {Clinic} from "../clinics.module/clinic.model";

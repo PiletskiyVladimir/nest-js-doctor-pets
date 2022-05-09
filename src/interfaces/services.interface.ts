@@ -1,6 +1,7 @@
-import { LoginUserDto } from "../dto/users/login-user.dto";
-import { TLoginResponse, TQuerySettings } from "../types";
-import { RegisterUserDto } from "../dto/users/register-user.dto";
+import {LoginUserDto} from "../dto/users/login-user.dto";
+import {TQuerySettings} from "../core/types";
+import {TLoginResponse} from '../types';
+import {RegisterUserDto} from "../dto/users/register-user.dto";
 
 export interface IGetAllService<T> {
     getAll(querySettings: TQuerySettings): Promise<T[]>;

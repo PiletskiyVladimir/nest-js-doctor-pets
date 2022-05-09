@@ -9,7 +9,7 @@ import {
     IUpdateService
 } from "../interfaces/services.interface";
 import {DoctorDto} from "../dto/doctors/doctor.dto";
-import {TQuerySettings} from "../types";
+import {TQuerySettings} from "../core/types";
 
 @Injectable()
 export class DoctorsService implements  ICreateService<Doctor, DoctorDto>,
