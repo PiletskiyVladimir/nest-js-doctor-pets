@@ -25,10 +25,4 @@ export class AuthUtils {
     public static comparePasswordWithPasswordInDB(password: string, passwordSalt: string, passwordFromDB: string): boolean {
         return AuthUtils.cryptPassword(password, passwordSalt) === passwordFromDB;
     }
-
-    public static generateToken(): string {
-        let now = Date.now();
-
-        return Md5.init(now);
-    }
 }
