@@ -2,7 +2,7 @@ import {Column, DataType, Model, Table} from "sequelize-typescript";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UpdateUserDto} from "./dto/update-user.dto";
 
-@Table({tableName: 'clients'})
+@Table({tableName: "clients"})
 export class Client extends Model<Client, CreateUserDto> {
     @Column({type: DataType.INTEGER, unique: true, allowNull: false, autoIncrement: true})
     id: number;

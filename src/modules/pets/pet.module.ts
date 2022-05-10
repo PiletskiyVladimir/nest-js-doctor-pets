@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { PetService } from './pet.service';
+import {Module} from "@nestjs/common";
+import {PetService} from "./pet.service";
 
 @Module({
-  providers: [PetService]
+    providers: [PetService],
 })
 export class PetModule {}

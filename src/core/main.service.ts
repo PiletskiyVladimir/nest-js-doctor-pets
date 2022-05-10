@@ -10,16 +10,16 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
     }
 
     public async getAll({
-                            offset,
-                            limit,
-                            sortField,
-                            sortType,
-                            query,
-                            raw = false,
-                            attributes = undefined
-                        }: TQuerySettings): Promise<{
-        result: Array<MODEL>,
-        totalCount: number
+        offset,
+        limit,
+        sortField,
+        sortType,
+        query,
+        raw = false,
+        attributes = undefined,
+    }: TQuerySettings): Promise<{
+        result: Array<MODEL>;
+        totalCount: number;
     }> {
         let promiseAllArr = [
             this.repository.findAll({
@@ -28,19 +28,19 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
                 limit: limit,
                 order: [[sortField, sortType]],
                 raw: raw,
-                attributes: attributes
+                attributes: attributes,
             }),
             this.repository.count({
-                where: query
-            })
+                where: query,
+            }),
         ];
 
         let result = await Promise.all(promiseAllArr);
 
         return {
             result: result[0],
-            totalCount: result[1]
-        }
+            totalCount: result[1],
+        };
     }
 
     public async getEntity(id: number): Promise<MODEL> {
@@ -79,7 +79,7 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
 
     public async count(query: {[prop: string]: any}) {
         return await this.repository.count({
-            where: query
+            where: query,
         });
     }
 }

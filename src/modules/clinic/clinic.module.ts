@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { ClinicService } from './clinic.service';
+import {Module} from "@nestjs/common";
+import {ClinicService} from "./clinic.service";
 
 @Module({
-  providers: [ClinicService]
+    providers: [ClinicService],
 })
 export class ClinicModule {}

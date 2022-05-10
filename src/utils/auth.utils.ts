@@ -1,4 +1,4 @@
-import {Md5} from 'md5-typescript';
+import {Md5} from "md5-typescript";
 
 export class AuthUtils {
     public static random(min, max): number {
@@ -7,8 +7,8 @@ export class AuthUtils {
     }
 
     public static generateSalt(): string {
-        let salt = '',
-            charUniverse = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+=-\\|[]{};';
+        let salt = "",
+            charUniverse = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+=-\\|[]{};";
 
         for (let i = 0; i < 4; i++) {
             let randInt = AuthUtils.random(0, charUniverse.length - 1);
@@ -22,7 +22,11 @@ export class AuthUtils {
         return Md5.init(password + passwordSalt);
     }
 
-    public static comparePasswordWithPasswordInDB(password: string, passwordSalt: string, passwordFromDB: string): boolean {
+    public static comparePasswordWithPasswordInDB(
+        password: string,
+        passwordSalt: string,
+        passwordFromDB: string,
+    ): boolean {
         return AuthUtils.cryptPassword(password, passwordSalt) === passwordFromDB;
     }
 }
