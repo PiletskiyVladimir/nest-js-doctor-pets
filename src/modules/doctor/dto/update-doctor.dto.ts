@@ -1,6 +1,6 @@
-export class UpdateUserDto {
+export class UpdateDoctorDto {
     readonly name: string;
     readonly lastName: string;
     readonly login: string;
-    readonly birthday: Date;
+    readonly skills: Array<string>;
 }

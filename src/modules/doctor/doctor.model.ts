@@ -1,0 +1,28 @@
+import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { CreateDoctorDto } from './dto/create-doctor.dto';
+import { Clinic } from '../clinic/clinic.model';
+import { DoctorClinics } from '../doctor-clinics/doctor-clinics.model';
+
+@Table({ tableName: 'doctors' })
+export class Doctor extends Model<Doctor, CreateDoctorDto> {
+    @Column({ type: DataType.INTEGER, unique: true, allowNull: false, primaryKey: true, autoIncrement: true })
+    id: number;
+
+    @Column({ type: DataType.STRING, allowNull: false })
+    name: string;
+
+    @Column({ type: DataType.STRING, allowNull: false })
+    lastName: string;
+
+    @Column({ type: DataType.STRING, allowNull: false, unique: true })
+    login: string;
+
+    @Column({ type: DataType.STRING, allowNull: false })
+    password: string;
+
+    @Column({ type: DataType.JSON })
+    skills: Array<string>;
+
+    @BelongsToMany(() => Clinic, () => DoctorClinics)
+    clinics: Clinic[];
+}
