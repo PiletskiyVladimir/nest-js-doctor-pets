@@ -1,5 +1,5 @@
-import {HttpException, Injectable} from "@nestjs/common";
-import {TQuerySettings} from "./types";
+import { HttpException, Injectable } from '@nestjs/common';
+import { TQuerySettings } from './types';
 
 @Injectable()
 export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
@@ -44,9 +44,9 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
     }
 
     public async getEntity(id: number): Promise<MODEL> {
-        let entity = await this.repository.findOne({where: {id}});
+        let entity = await this.repository.findOne({ where: { id } });
 
-        if (!entity) throw new HttpException("Entity not found", 404);
+        if (!entity) throw new HttpException('Entity not found', 404);
 
         return entity;
     }
@@ -56,9 +56,9 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
     }
 
     public async update(id: number, updateModel: UPDATE_DTO) {
-        let entity = await this.repository.findOne({where: {id}});
+        let entity = await this.repository.findOne({ where: { id } });
 
-        if (!entity) throw new HttpException("Entity not found", 404);
+        if (!entity) throw new HttpException('Entity not found', 404);
 
         for (let prop in updateModel) {
             entity[prop] = updateModel[prop];
@@ -70,14 +70,14 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
     }
 
     public async delete(id: number): Promise<void> {
-        let entity = await this.repository.findOne({where: {id}});
+        let entity = await this.repository.findOne({ where: { id } });
 
-        if (!entity) throw new HttpException("Entity not found", 404);
+        if (!entity) throw new HttpException('Entity not found', 404);
 
-        await this.repository.destroy({where: {id}});
+        await this.repository.destroy({ where: { id } });
     }
 
-    public async count(query: {[prop: string]: any}) {
+    public async count(query: { [prop: string]: any }) {
         return await this.repository.count({
             where: query,
         });

@@ -1,5 +1,5 @@
 export declare type TQuerySettings = {
-    query: {[prop: string]: any};
+    query: { [prop: string]: any };
     limit: number;
     offset: number;
     sortField: string;

@@ -5,7 +5,7 @@ import { Clinic } from '../clinic/clinic.model';
 
 @Table({ tableName: 'doctor_clinics' })
 export class DoctorClinics extends Model<DoctorClinics, DoctorClinicDto> {
-    @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true })
+    @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true, allowNull: false })
     id: number;
 
     @ForeignKey(() => Doctor)

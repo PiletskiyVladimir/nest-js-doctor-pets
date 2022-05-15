@@ -6,7 +6,7 @@ import { WorkingHours } from './clinic.type';
 
 @Table({ tableName: 'clinics' })
 export class Clinic extends Model<Clinic, ClinicDto> {
-    @Column({ type: DataType.INTEGER, unique: true, allowNull: false, autoIncrement: true })
+    @Column({ type: DataType.INTEGER, unique: true, allowNull: false, autoIncrement: true, primaryKey: true })
     id: number;
 
     @Column({ type: DataType.STRING, allowNull: false })
