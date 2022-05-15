@@ -1,4 +1,4 @@
-export class UpdateUserDto {
+export class UpdateClientDto {
     readonly name: string;
     readonly lastName: string;
     readonly login: string;
