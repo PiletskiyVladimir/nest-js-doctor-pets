@@ -1,6 +1,12 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
+import { Client } from './modules/client/client.model';
+import { Pet } from './modules/pets/pet.model';
+import { Doctor } from './modules/doctor/doctor.model';
+import { DoctorClinics } from './modules/doctor-clinics/doctor-clinics.model';
+import { Clinic } from './modules/clinic/clinic.model';
+import { Report } from './modules/reports/report.model';
 
 @Module({
     providers: [],
@@ -16,7 +22,7 @@ import { ConfigModule } from '@nestjs/config';
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [],
+            models: [Client, Pet, Doctor, DoctorClinics, Clinic, Report],
             autoLoadModels: true,
             logging: false,
         }),

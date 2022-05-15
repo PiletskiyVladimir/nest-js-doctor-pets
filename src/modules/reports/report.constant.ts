@@ -1,0 +1,4 @@
+export enum REPORT_STATUS {
+    PENDING = 'PENDING',
+    FINISHED = 'FINISHED',
+}

@@ -1,7 +1,8 @@
-import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { Clinic } from '../clinic/clinic.model';
 import { DoctorClinics } from '../doctor-clinics/doctor-clinics.model';
+import { Report } from '../reports/report.model';
 
 @Table({ tableName: 'doctors' })
 export class Doctor extends Model<Doctor, CreateDoctorDto> {
@@ -25,4 +26,7 @@ export class Doctor extends Model<Doctor, CreateDoctorDto> {
 
     @BelongsToMany(() => Clinic, () => DoctorClinics)
     clinics: Clinic[];
+
+    @HasMany(() => Report)
+    reports: Report[];
 }
