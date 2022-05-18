@@ -20,6 +20,9 @@ export class Client extends Model<Client, CreateClientDto> {
     @Column({ type: DataType.STRING, allowNull: false })
     password: string;
 
+    @Column({ type: DataType.STRING, allowNull: false })
+    password_salt: string;
+
     @Column({ type: DataType.DATEONLY })
     birthday: Date;
 

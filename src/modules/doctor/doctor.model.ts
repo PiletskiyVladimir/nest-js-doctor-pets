@@ -21,6 +21,9 @@ export class Doctor extends Model<Doctor, CreateDoctorDto> {
     @Column({ type: DataType.STRING, allowNull: false })
     password: string;
 
+    @Column({ type: DataType.STRING, allowNull: false })
+    password_salt: string;
+
     @Column({ type: DataType.JSON })
     skills: Array<string>;
 

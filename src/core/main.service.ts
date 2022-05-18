@@ -43,8 +43,8 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
         };
     }
 
-    public async getEntity(id: number): Promise<MODEL> {
-        let entity = await this.repository.findOne({ where: { id } });
+    public async getEntity(search: { [k: string]: any }): Promise<MODEL> {
+        let entity = await this.repository.findOne({ where: search });
 
         if (!entity) throw new HttpException('Entity not found', 404);
 
@@ -55,8 +55,8 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
         return await this.repository.create(dto);
     }
 
-    public async update(id: number, updateModel: UPDATE_DTO) {
-        let entity = await this.repository.findOne({ where: { id } });
+    public async update(search: { [k: string]: any }, updateModel: UPDATE_DTO) {
+        let entity = await this.repository.findOne({ where: search });
 
         if (!entity) throw new HttpException('Entity not found', 404);
 
@@ -69,12 +69,12 @@ export default class MainService<MODEL, CREATE_DTO, UPDATE_DTO> {
         return entity;
     }
 
-    public async delete(id: number): Promise<void> {
-        let entity = await this.repository.findOne({ where: { id } });
+    public async delete(search: { [k: string]: any }): Promise<void> {
+        let entity = await this.repository.findOne({ where: search });
 
         if (!entity) throw new HttpException('Entity not found', 404);
 
-        await this.repository.destroy({ where: { id } });
+        await this.repository.destroy({ where: search });
     }
 
     public async count(query: { [prop: string]: any }) {
