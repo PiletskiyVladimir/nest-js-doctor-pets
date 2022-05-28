@@ -7,6 +7,7 @@ import { Doctor } from './modules/doctor/doctor.model';
 import { DoctorClinics } from './modules/doctor-clinics/doctor-clinics.model';
 import { Clinic } from './modules/clinic/clinic.model';
 import { Report } from './modules/reports/report.model';
+import { DisabledTokens } from './modules/disabled-tokens/disabled-tokens.model';
 
 @Module({
     providers: [],
@@ -22,7 +23,7 @@ import { Report } from './modules/reports/report.model';
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [Client, Pet, Doctor, DoctorClinics, Clinic, Report],
+            models: [Client, Pet, Doctor, DoctorClinics, Clinic, Report, DisabledTokens],
             autoLoadModels: true,
             logging: false,
         }),
