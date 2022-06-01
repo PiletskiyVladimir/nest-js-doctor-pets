@@ -1,4 +1,5 @@
 import { Md5 } from 'md5-typescript';
+import { UnauthorizedException } from '@nestjs/common';
 
 export class AuthUtils {
     public static random(min, max): number {
@@ -28,5 +29,16 @@ export class AuthUtils {
         passwordFromDB: string
     ): boolean {
         return AuthUtils.cryptPassword(password, passwordSalt) === passwordFromDB;
+    }
+
+    public static getJWTTokenFromAuthString(token: string) {
+        const bearer = token.split(' ')[0];
+        const jwt_token = token.split(' ')[1];
+
+        if (bearer !== 'Bearer' || !token) {
+            throw new UnauthorizedException({ message: 'Entity is unauthorized' });
+        }
+
+        return jwt_token;
     }
 }
