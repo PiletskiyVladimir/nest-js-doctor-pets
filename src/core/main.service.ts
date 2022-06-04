@@ -45,7 +45,7 @@ export default class MainService<MODEL extends Model, CREATE_DTO, UPDATE_DTO> {
         };
     }
 
-    public async getEntity(search: { [k: string]: any }): Promise<MODEL> {
+    public async getEntity(search: Record<string, any>): Promise<MODEL> {
         const entity = await this.repository.findOne({ where: <WhereOptions<MODEL>>search });
 
         if (!entity) throw new HttpException('Entity not found', 404);
@@ -57,12 +57,10 @@ export default class MainService<MODEL extends Model, CREATE_DTO, UPDATE_DTO> {
         return await this.repository.create(dto);
     }
 
-    public async updateMany(search: { [k: string]: any }, updateModel: UPDATE_DTO): Promise<MODEL[]> {
+    public async updateMany(search: Record<string, any>, updateModel: UPDATE_DTO): Promise<MODEL[]> {
         await this.repository.update(updateModel, { where: <WhereOptions<MODEL>>search });
 
-        const entities = await this.repository.findAll({ where: <WhereOptions<MODEL>>search });
-
-        return entities;
+        return await this.repository.findAll({ where: <WhereOptions<MODEL>>search });
     }
 
     public async updateById(id: number, updateModel: UPDATE_DTO): Promise<MODEL> {
@@ -71,7 +69,7 @@ export default class MainService<MODEL extends Model, CREATE_DTO, UPDATE_DTO> {
         return await this.repository.findOne({ where: { id } });
     }
 
-    public async delete(search: { [k: string]: any }): Promise<void> {
+    public async delete(search: Record<string, any>): Promise<void> {
         const entity = await this.repository.findOne({ where: <WhereOptions<MODEL>>search });
 
         if (!entity) throw new HttpException('Entity not found', 404);
@@ -79,13 +77,13 @@ export default class MainService<MODEL extends Model, CREATE_DTO, UPDATE_DTO> {
         await this.repository.destroy({ where: <WhereOptions<MODEL>>search });
     }
 
-    public async count(query: { [prop: string]: any }): Promise<number> {
+    public async count(query: Record<string, any>): Promise<number> {
         return await this.repository.count({
             where: <WhereOptions<MODEL>>query,
         });
     }
 
-    public async exists(query: { [prop: string]: any }): Promise<boolean> {
+    public async exists(query: Record<string, any>): Promise<boolean> {
         return (await this.count(query)) > 0;
     }
 }

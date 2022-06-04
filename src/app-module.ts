@@ -8,6 +8,8 @@ import { DoctorClinics } from './modules/doctor-clinics/doctor-clinics.model';
 import { Clinic } from './modules/clinic/clinic.model';
 import { Report } from './modules/reports/report.model';
 import { DisabledTokens } from './modules/disabled-tokens/disabled-tokens.model';
+import { ClientAuthModule } from './modules/auth/client-auth/client-auth.module';
+import { DoctorAuthModule } from './modules/auth/doctor-auth/doctor-auth.module';
 
 @Module({
     providers: [],
@@ -27,6 +29,8 @@ import { DisabledTokens } from './modules/disabled-tokens/disabled-tokens.model'
             autoLoadModels: true,
             logging: false,
         }),
+        ClientAuthModule,
+        DoctorAuthModule,
     ],
     exports: [],
 })

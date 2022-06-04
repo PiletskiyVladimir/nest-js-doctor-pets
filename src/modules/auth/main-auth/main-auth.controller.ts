@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Post, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClientService } from '../../client/client.service';
 import { DoctorService } from '../../doctor/doctor.service';
@@ -8,9 +8,10 @@ import { CreateDoctorDto } from '../../doctor/dto/create-doctor.dto';
 import { EntityAuthInfo } from '../../../core/types/auth';
 import { DisabledTokensService } from '../../disabled-tokens/disabled-tokens.service';
 import { DisabledTokens } from '../../disabled-tokens/disabled-tokens.model';
+import { AuthPayload } from './main-auth.constant';
 
 @Injectable()
-export class MainAuthService<
+export class MainAuthController<
     T extends
         | {
               service: ClientService;
@@ -28,28 +29,24 @@ export class MainAuthService<
 
     private disabledTokensService: DisabledTokensService;
 
-    constructor(auth: T) {
+    constructor(auth: T, jwtService: JwtService) {
         this.entityService = auth.service;
         this.dto = auth.dto;
 
         this.disabledTokensService = new DisabledTokensService(DisabledTokens);
 
-        this.jwtService = new JwtService({
-            secret: process.env.PRIVATE_KEY || 'SECRET',
-            signOptions: {
-                expiresIn: '24h',
-            },
-        });
+        this.jwtService = jwtService;
     }
 
-    // логаут регистрация и проверка на подлинность пароля одинаковая и для клиента и для врача, а логин нужно сделать разным, потому что при логине будут задействованы разные поля в токене, у юзера client_id, у доктора - doctor_id. Поэтому у всех методов тип protected так как от этого класса будут наследованы классы логина доктора и клиента
+    // Лог аут регистрация и проверка на подлинность пароля одинаковая и для клиента и для врача, а логин нужно сделать разным, потому что при логине будут задействованы разные поля в токене, у юзера client_id, у доктора - doctor_id. Поэтому у всех методов тип protected так как от этого класса будут наследованы классы логина доктора и клиента
 
-    protected async logout(token: string, entityId: number) {
-        // check if token is not in table
-
-        const isTokenInDB = await this.disabledTokensService.count({
+    protected async logout(token: string, entityId: number): Promise<void> {
+        await this.disabledTokensService.create({
             token: token,
+            entity_id: entityId,
         });
+
+        return;
     }
 
     protected verifyToken(token: string): EntityAuthInfo {
@@ -60,8 +57,42 @@ export class MainAuthService<
         }
     }
 
+    protected generateToken(entityId: number, login: string, entityType: 'DOCTOR' | 'CLIENT') {
+        const payload: AuthPayload = {
+            login: login,
+            id: entityId,
+        };
+
+        switch (entityType) {
+            case 'CLIENT':
+                payload.userId = entityId;
+                break;
+            case 'DOCTOR':
+                payload.doctorId = entityId;
+                break;
+        }
+
+        return this.jwtService.sign(payload);
+    }
+
+    protected async checkIfTokenIsNotDisabled(token: string): Promise<boolean> {
+        return await this.disabledTokensService.exists({ token });
+    }
+
+    @Post()
     protected async register(createDto: T['dto']) {
         const createdEntity = await this.entityService.create(createDto);
+
+        const token = this.generateToken(
+            createdEntity.id,
+            createdEntity.login,
+            createDto instanceof CreateClientDto ? 'CLIENT' : 'DOCTOR'
+        );
+
+        return {
+            entity: createdEntity,
+            token: token,
+        };
     }
 
     protected async validateUser(login: string, password: string) {
