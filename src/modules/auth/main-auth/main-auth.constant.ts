@@ -4,3 +4,8 @@ export type AuthPayload = {
     login: string;
     id: number;
 };
+
+export type LoginReqBody = {
+    password: string;
+    login: string;
+};

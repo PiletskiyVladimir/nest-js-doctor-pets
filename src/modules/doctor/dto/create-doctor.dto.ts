@@ -3,6 +3,6 @@ export class CreateDoctorDto {
     readonly lastName: string;
     readonly login: string;
     readonly password: string;
-    readonly password_salt: string;
+    readonly password_salt?: string;
     readonly skills?: Array<string>;
 }

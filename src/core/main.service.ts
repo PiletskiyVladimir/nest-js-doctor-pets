@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { TQuerySettings } from './types';
+import { TQuerySettings } from './types/query';
 import { Model, ModelCtor } from 'sequelize-typescript';
 import { WhereOptions } from 'sequelize';
 

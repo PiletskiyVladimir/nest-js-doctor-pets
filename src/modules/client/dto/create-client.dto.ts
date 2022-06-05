@@ -3,6 +3,6 @@ export class CreateClientDto {
     readonly lastName: string;
     readonly login: string;
     readonly password: string;
-    readonly password_salt: string;
+    readonly password_salt?: string;
     readonly birthday?: Date;
 }

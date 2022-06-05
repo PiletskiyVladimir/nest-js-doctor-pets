@@ -5,7 +5,7 @@ import { CreateDoctorDto } from '../../doctor/dto/create-doctor.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Doctor } from '../../doctor/doctor.model';
 
-@Controller('doctor')
+@Controller('doctor-auth')
 export class DoctorAuthController extends MainAuthController<{
     service: DoctorService;
     dto: CreateDoctorDto;

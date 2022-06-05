@@ -1,18 +1,29 @@
-import { Md5 } from 'md5-typescript';
 import { UnauthorizedException } from '@nestjs/common';
+import { createHash } from 'crypto';
 
 export class AuthUtils {
     public static random(min, max): number {
-        let rand = min + Math.random() * (max + 1 - min);
+        const rand = min + Math.random() * (max + 1 - min);
         return Math.floor(rand);
     }
 
+    public static getTokenFromAuthString(authString: string): string {
+        const bearer = authString.split(' ')[0];
+        const token = authString.split(' ')[1];
+
+        if (bearer !== 'Bearer' || !token) {
+            throw new UnauthorizedException({ message: 'User is unauthorized' });
+        }
+
+        return token;
+    }
+
     public static generateSalt(): string {
-        let salt = '',
-            charUniverse = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+=-\\|[]{};';
+        let salt = '';
+        const charUniverse = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+=-\\|[]{};';
 
         for (let i = 0; i < 4; i++) {
-            let randInt = AuthUtils.random(0, charUniverse.length - 1);
+            const randInt = AuthUtils.random(0, charUniverse.length - 1);
             salt += charUniverse[randInt];
         }
 
@@ -20,7 +31,9 @@ export class AuthUtils {
     }
 
     public static cryptPassword(password: string, passwordSalt: string): string {
-        return Md5.init(password + passwordSalt);
+        return createHash('md5')
+            .update(password + passwordSalt)
+            .digest('hex');
     }
 
     public static comparePasswordWithPasswordInDB(

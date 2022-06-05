@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Post, UnauthorizedException } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, Injectable, Post, Request } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClientService } from '../../client/client.service';
 import { DoctorService } from '../../doctor/doctor.service';
@@ -8,7 +8,8 @@ import { CreateDoctorDto } from '../../doctor/dto/create-doctor.dto';
 import { EntityAuthInfo } from '../../../core/types/auth';
 import { DisabledTokensService } from '../../disabled-tokens/disabled-tokens.service';
 import { DisabledTokens } from '../../disabled-tokens/disabled-tokens.model';
-import { AuthPayload } from './main-auth.constant';
+import { AuthPayload, LoginReqBody } from './main-auth.constant';
+import { AuthGetter } from '../../../decorators/auth-decorator';
 
 @Injectable()
 export class MainAuthController<
@@ -27,7 +28,7 @@ export class MainAuthController<
 
     protected jwtService: JwtService;
 
-    private disabledTokensService: DisabledTokensService;
+    protected disabledTokensService: DisabledTokensService;
 
     constructor(auth: T, jwtService: JwtService) {
         this.entityService = auth.service;
@@ -38,23 +39,65 @@ export class MainAuthController<
         this.jwtService = jwtService;
     }
 
+    @Post('/registration')
+    protected async register(@Body() createDto: T['dto']) {
+        const passwordSalt = AuthUtils.generateSalt();
+
+        const createdEntity = await this.entityService.create({ ...createDto, password_salt: passwordSalt });
+
+        const token = this.generateToken(
+            createdEntity.id,
+            createdEntity.login,
+            createDto instanceof CreateClientDto ? 'CLIENT' : 'DOCTOR'
+        );
+
+        return {
+            entity: createdEntity,
+            token: token,
+        };
+    }
+
+    @Post('/login')
+    protected async login(@Body() body: LoginReqBody) {
+        const entityName = this.entityService instanceof ClientService ? 'Client' : 'Doctor';
+
+        const entity = await this.entityService.getEntity({ login: body.login });
+
+        if (!entity) throw new HttpException(`${entityName} not found`, HttpStatus.UNAUTHORIZED);
+
+        const arePasswordsEqual = AuthUtils.comparePasswordWithPasswordInDB(
+            body.password,
+            entity.password_salt,
+            entity.password
+        );
+
+        if (!arePasswordsEqual) throw new HttpException('Wrong password', HttpStatus.UNAUTHORIZED);
+
+        const token = this.generateToken(
+            entity.id,
+            entity.login,
+            this.entityService instanceof ClientService ? 'CLIENT' : 'DOCTOR'
+        );
+
+        return {
+            token: token,
+        };
+    }
+
     // Лог аут регистрация и проверка на подлинность пароля одинаковая и для клиента и для врача, а логин нужно сделать разным, потому что при логине будут задействованы разные поля в токене, у юзера client_id, у доктора - doctor_id. Поэтому у всех методов тип protected так как от этого класса будут наследованы классы логина доктора и клиента
 
-    protected async logout(token: string, entityId: number): Promise<void> {
+    @Post('/logout')
+    protected async logout(@Request() req: Request, @AuthGetter() entity: EntityAuthInfo): Promise<void> {
+        const entityId = this.entityService instanceof ClientService ? entity.user_id : entity.doctor_id;
+
+        const token = AuthUtils.getTokenFromAuthString(req.headers.get('authorization'));
+
         await this.disabledTokensService.create({
             token: token,
             entity_id: entityId,
         });
 
         return;
-    }
-
-    protected verifyToken(token: string): EntityAuthInfo {
-        try {
-            return this.jwtService.verify(token) as EntityAuthInfo;
-        } catch (e) {
-            throw new UnauthorizedException({ message: 'User is unauthorized' });
-        }
     }
 
     protected generateToken(entityId: number, login: string, entityType: 'DOCTOR' | 'CLIENT') {
@@ -77,37 +120,5 @@ export class MainAuthController<
 
     protected async checkIfTokenIsNotDisabled(token: string): Promise<boolean> {
         return await this.disabledTokensService.exists({ token });
-    }
-
-    @Post()
-    protected async register(createDto: T['dto']) {
-        const createdEntity = await this.entityService.create(createDto);
-
-        const token = this.generateToken(
-            createdEntity.id,
-            createdEntity.login,
-            createDto instanceof CreateClientDto ? 'CLIENT' : 'DOCTOR'
-        );
-
-        return {
-            entity: createdEntity,
-            token: token,
-        };
-    }
-
-    protected async validateUser(login: string, password: string) {
-        const entity = await this.entityService.getEntity({ login });
-
-        if (!entity) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-
-        const isPasswordEqual = AuthUtils.comparePasswordWithPasswordInDB(
-            password,
-            entity.password_salt,
-            entity.password
-        );
-
-        if (!isPasswordEqual) throw new HttpException('Wrong user password', HttpStatus.UNAUTHORIZED);
-
-        return entity;
     }
 }
