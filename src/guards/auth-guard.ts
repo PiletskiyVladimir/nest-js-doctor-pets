@@ -16,6 +16,8 @@ export class JwtAuthGuard implements CanActivate {
 
         req.user = this.jwtService.verify(token);
 
+        // todo add check if token is not in disabled tokens table
+
         return true;
     }
 }

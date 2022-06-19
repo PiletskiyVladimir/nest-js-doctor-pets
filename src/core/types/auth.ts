@@ -1,5 +1,5 @@
 export type EntityAuthInfo = {
-    user_id?: number;
-    doctor_id?: number;
-    email: string;
+    userId?: number;
+    doctorId?: number;
+    login: string;
 };

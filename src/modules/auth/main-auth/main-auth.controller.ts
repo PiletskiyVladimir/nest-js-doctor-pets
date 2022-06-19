@@ -1,4 +1,4 @@
-import { Body, HttpException, HttpStatus, Injectable, Post, Request } from '@nestjs/common';
+import { Body, Headers, HttpException, HttpStatus, Injectable, Post, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClientService } from '../../client/client.service';
 import { DoctorService } from '../../doctor/doctor.service';
@@ -10,6 +10,7 @@ import { DisabledTokensService } from '../../disabled-tokens/disabled-tokens.ser
 import { DisabledTokens } from '../../disabled-tokens/disabled-tokens.model';
 import { AuthPayload, LoginReqBody } from './main-auth.constant';
 import { AuthGetter } from '../../../decorators/auth-decorator';
+import { JwtAuthGuard } from '../../../guards/auth-guard';
 
 @Injectable()
 export class MainAuthController<
@@ -40,10 +41,18 @@ export class MainAuthController<
     }
 
     @Post('/registration')
-    protected async register(@Body() createDto: T['dto']) {
+    public async register(@Body() createDto: T['dto']) {
         const passwordSalt = AuthUtils.generateSalt();
 
-        const createdEntity = await this.entityService.create({ ...createDto, password_salt: passwordSalt });
+        const encryptedPassword = AuthUtils.cryptPassword(createDto.password, passwordSalt);
+
+        const createdEntity = (
+            await this.entityService.create({
+                ...createDto,
+                password: encryptedPassword,
+                password_salt: passwordSalt,
+            })
+        ).get({ plain: true });
 
         const token = this.generateToken(
             createdEntity.id,
@@ -51,14 +60,16 @@ export class MainAuthController<
             createDto instanceof CreateClientDto ? 'CLIENT' : 'DOCTOR'
         );
 
+        const { password, password_salt, ...response } = createdEntity;
+
         return {
-            entity: createdEntity,
+            entity: response,
             token: token,
         };
     }
 
     @Post('/login')
-    protected async login(@Body() body: LoginReqBody) {
+    public async login(@Body() body: LoginReqBody) {
         const entityName = this.entityService instanceof ClientService ? 'Client' : 'Doctor';
 
         const entity = await this.entityService.getEntity({ login: body.login });
@@ -84,11 +95,12 @@ export class MainAuthController<
         };
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post('/logout')
-    protected async logout(@Request() req: Request, @AuthGetter() entity: EntityAuthInfo): Promise<void> {
-        const entityId = this.entityService instanceof ClientService ? entity.user_id : entity.doctor_id;
+    public async logout(@Headers() headers: Record<string, any>, @AuthGetter() entity: EntityAuthInfo): Promise<void> {
+        const entityId = this.entityService instanceof ClientService ? entity.userId : entity.userId;
 
-        const token = AuthUtils.getTokenFromAuthString(req.headers.get('authorization'));
+        const token = AuthUtils.getTokenFromAuthString(headers.authorization);
 
         await this.disabledTokensService.create({
             token: token,

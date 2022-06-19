@@ -1,6 +1,5 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { CreateClientDto } from './dto/create-client.dto';
-import { UpdateClientDto } from './dto/update-client.dto';
 import { Pet } from '../pets/pet.model';
 
 @Table({ tableName: 'clients' })
