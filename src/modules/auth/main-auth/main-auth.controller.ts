@@ -84,8 +84,6 @@ export class MainAuthController<
         };
     }
 
-    // Лог аут регистрация и проверка на подлинность пароля одинаковая и для клиента и для врача, а логин нужно сделать разным, потому что при логине будут задействованы разные поля в токене, у юзера client_id, у доктора - doctor_id. Поэтому у всех методов тип protected так как от этого класса будут наследованы классы логина доктора и клиента
-
     @Post('/logout')
     protected async logout(@Request() req: Request, @AuthGetter() entity: EntityAuthInfo): Promise<void> {
         const entityId = this.entityService instanceof ClientService ? entity.user_id : entity.doctor_id;
