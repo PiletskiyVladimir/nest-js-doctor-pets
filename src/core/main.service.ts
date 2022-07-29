@@ -1,10 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { TQuerySettings } from './types/query';
 import { Model, ModelCtor } from 'sequelize-typescript';
-import { WhereOptions } from 'sequelize';
+import { CreationAttributes, WhereOptions } from 'sequelize';
 
 @Injectable()
-export default class MainService<MODEL extends Model, CREATE_DTO, UPDATE_DTO> {
+export default class MainService<MODEL extends Model> {
     private readonly repository: ModelCtor<MODEL>;
 
     constructor(repository) {
@@ -19,13 +19,13 @@ export default class MainService<MODEL extends Model, CREATE_DTO, UPDATE_DTO> {
         query,
         raw = false,
         attributes = undefined,
-    }: TQuerySettings): Promise<{
+    }: TQuerySettings<MODEL>): Promise<{
         result: Array<MODEL>;
         totalCount: number;
     }> {
         const promiseAllArr: [Promise<MODEL[]>, Promise<number>] = [
             this.repository.findAll({
-                where: <WhereOptions<MODEL>>query,
+                where: query,
                 offset: offset,
                 limit: limit,
                 order: [[sortField, sortType]],
@@ -45,45 +45,41 @@ export default class MainService<MODEL extends Model, CREATE_DTO, UPDATE_DTO> {
         };
     }
 
-    public async getEntity(search: Record<string, any>): Promise<MODEL> {
-        const entity = await this.repository.findOne({ where: <WhereOptions<MODEL>>search });
-
-        if (!entity) throw new HttpException('Entity not found', 404);
-
-        return entity;
+    public async getEntity(search: WhereOptions<MODEL>): Promise<MODEL> {
+        return await this.repository.findOne({ where: search });
     }
 
-    public async create(dto: CREATE_DTO): Promise<MODEL> {
+    public async create(dto: CreationAttributes<MODEL>): Promise<MODEL> {
         return await this.repository.create(dto);
     }
 
-    public async updateMany(search: Record<string, any>, updateModel: UPDATE_DTO): Promise<MODEL[]> {
-        await this.repository.update(updateModel, { where: <WhereOptions<MODEL>>search });
+    public async updateMany(search: WhereOptions<MODEL>, updateModel: Partial<MODEL>): Promise<MODEL[]> {
+        await this.repository.update(updateModel, { where: search });
 
         return await this.repository.findAll({ where: <WhereOptions<MODEL>>search });
     }
 
-    public async updateById(id: number, updateModel: UPDATE_DTO): Promise<MODEL> {
+    public async updateById(id: number, updateModel: Partial<MODEL>): Promise<MODEL> {
         await this.repository.update(updateModel, { where: { id } });
 
         return await this.repository.findOne({ where: { id } });
     }
 
-    public async delete(search: Record<string, any>): Promise<void> {
-        const entity = await this.repository.findOne({ where: <WhereOptions<MODEL>>search });
+    public async delete(search: WhereOptions<MODEL>): Promise<void> {
+        const entity = await this.repository.findOne({ where: search });
 
         if (!entity) throw new HttpException('Entity not found', 404);
 
         await this.repository.destroy({ where: <WhereOptions<MODEL>>search });
     }
 
-    public async count(query: Record<string, any>): Promise<number> {
+    public async count(query: WhereOptions<MODEL>): Promise<number> {
         return await this.repository.count({
-            where: <WhereOptions<MODEL>>query,
+            where: query,
         });
     }
 
-    public async exists(query: Record<string, any>): Promise<boolean> {
+    public async exists(query: WhereOptions<MODEL>): Promise<boolean> {
         return (await this.count(query)) > 0;
     }
 }

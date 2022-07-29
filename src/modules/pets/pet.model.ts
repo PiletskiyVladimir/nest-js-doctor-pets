@@ -1,10 +1,9 @@
 import { Column, DataType, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
-import { CreatePetDto } from './dto/create-pet.dto';
 import { Client } from '../client/client.model';
 import { Report } from '../reports/report.model';
 
 @Table({ tableName: 'pets' })
-export class Pet extends Model<Pet, CreatePetDto> {
+export class Pet extends Model<Pet> {
     @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, allowNull: false, primaryKey: true })
     id: number;
 

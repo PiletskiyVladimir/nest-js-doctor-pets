@@ -3,8 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import { ClientService } from '../../client/client.service';
 import { DoctorService } from '../../doctor/doctor.service';
 import { AuthUtils } from '../../../utils/auth.utils';
-import { CreateClientDto } from '../../client/dto/create-client.dto';
-import { CreateDoctorDto } from '../../doctor/dto/create-doctor.dto';
 import { EntityAuthInfo } from '../../../core/types/auth';
 import { DisabledTokensService } from '../../disabled-tokens/disabled-tokens.service';
 import { DisabledTokens } from '../../disabled-tokens/disabled-tokens.model';
@@ -13,27 +11,15 @@ import { AuthGetter } from '../../../decorators/auth-decorator';
 import { JwtAuthGuard } from '../../../guards/auth-guard';
 
 @Injectable()
-export class MainAuthController<
-    T extends
-        | {
-              service: ClientService;
-              dto: CreateClientDto;
-          }
-        | {
-              service: DoctorService;
-              dto: CreateDoctorDto;
-          }
-> {
-    protected entityService: T['service'];
-    protected dto: T['dto'];
+export class MainAuthController<T extends ClientService | DoctorService> {
+    protected entityService: T;
 
     protected jwtService: JwtService;
 
     protected disabledTokensService: DisabledTokensService;
 
     constructor(auth: T, jwtService: JwtService) {
-        this.entityService = auth.service;
-        this.dto = auth.dto;
+        this.entityService = auth;
 
         this.disabledTokensService = new DisabledTokensService(DisabledTokens);
 
@@ -41,7 +27,7 @@ export class MainAuthController<
     }
 
     @Post('/registration')
-    public async register(@Body() createDto: T['dto']) {
+    public async register(@Body() createDto) {
         const passwordSalt = AuthUtils.generateSalt();
 
         const encryptedPassword = AuthUtils.cryptPassword(createDto.password, passwordSalt);
@@ -57,7 +43,7 @@ export class MainAuthController<
         const token = this.generateToken(
             createdEntity.id,
             createdEntity.login,
-            createDto instanceof CreateClientDto ? 'CLIENT' : 'DOCTOR'
+            this.entityService instanceof ClientService ? 'CLIENT' : 'DOCTOR'
         );
 
         const { password, password_salt, ...response } = createdEntity;

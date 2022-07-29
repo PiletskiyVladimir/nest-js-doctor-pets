@@ -1,12 +1,11 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
-import { CreateReportDto } from './dto/create-report.dto';
 import { Pet } from '../pets/pet.model';
 import { Clinic } from '../clinic/clinic.model';
 import { Doctor } from '../doctor/doctor.model';
 import { REPORT_STATUS } from './report.constant';
 
 @Table({ tableName: 'reports' })
-export class Report extends Model<Report, CreateReportDto> {
+export class Report extends Model<Report> {
     @Column({ primaryKey: true, allowNull: false, autoIncrement: true, unique: true, type: DataType.INTEGER })
     id: number;
 

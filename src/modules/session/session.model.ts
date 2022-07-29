@@ -1,9 +1,8 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
-import { SessionDto } from './dto/session.dto';
 import { Client } from '../client/client.model';
 
 @Table({ tableName: 'sessions', timestamps: false })
-export class Session extends Model<Session, SessionDto> {
+export class Session extends Model<Session> {
     @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true, allowNull: false })
     id: number;
 

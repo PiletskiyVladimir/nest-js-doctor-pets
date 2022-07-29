@@ -1,10 +1,9 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
-import { DoctorClinicDto } from './dto/doctor-clinic.dto';
 import { Doctor } from '../doctor/doctor.model';
 import { Clinic } from '../clinic/clinic.model';
 
 @Table({ tableName: 'doctor_clinics' })
-export class DoctorClinics extends Model<DoctorClinics, DoctorClinicDto> {
+export class DoctorClinics extends Model<DoctorClinics> {
     @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true, allowNull: false })
     id: number;
 

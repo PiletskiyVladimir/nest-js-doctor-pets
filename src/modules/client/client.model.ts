@@ -1,9 +1,8 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
-import { CreateClientDto } from './dto/create-client.dto';
 import { Pet } from '../pets/pet.model';
 
 @Table({ tableName: 'clients' })
-export class Client extends Model<Client, CreateClientDto> {
+export class Client extends Model<Client> {
     @Column({ type: DataType.INTEGER, unique: true, allowNull: false, autoIncrement: true, primaryKey: true })
     id: number;
 
