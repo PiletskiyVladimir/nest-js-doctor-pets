@@ -27,7 +27,7 @@ import { DoctorAuthModule } from './modules/auth/doctor-auth/doctor-auth.module'
             database: process.env.POSTGRES_DB,
             models: [Client, Pet, Doctor, DoctorClinics, Clinic, Report, DisabledTokens],
             autoLoadModels: true,
-            logging: true,
+            logging: false,
         }),
         ClientAuthModule,
         DoctorAuthModule,
